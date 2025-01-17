@@ -24,6 +24,8 @@ async function main() {
     console.log(JSON.stringify(result, null, 2));
   } catch (error) {
     console.error("Erro ao criar registro:", error.message);
+    console.log('Token enviado:', process.env.PIPEFY_API_TOKEN);
+
   }
 }
 
