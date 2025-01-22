@@ -1,4 +1,5 @@
 const axios = require("axios");
+require('dotenv').config();  // Carrega as variáveis de ambiente
 
 // Configuração da API do Pipefy
 const API_URL = "https://api.pipefy.com/graphql";
@@ -12,6 +13,7 @@ const api = axios.create({
     "Content-Type": "application/json",
   },
 });
+console.log("Cabeçalho Authorization:", `Bearer ${PIPEFY_TOKEN}`);
 
 // Função para executar uma query GraphQL
 async function executeQuery(query) {
