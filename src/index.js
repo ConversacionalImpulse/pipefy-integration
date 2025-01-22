@@ -1,3 +1,4 @@
+const express = require("express");
 const { executeQuery } = require("./api");
 const { createRecordQuery } = require("./queries");
 require("dotenv").config({ path: "../.env" });
@@ -7,37 +8,43 @@ console.log("Token carregado:", process.env.PIPEFY_TOKEN);
 // Configurações
 const TABLE_ID = "305637362";
 
-// Dados do registro
-const recordData = {
-  title: "Felipe Gaudêncio",
-  fields: [
-    { id: "nome", value: "Felipe Gaudêncio" },
-    { id: "email", value: "felipe8675@gmail.com" },
-    { id: "telefone", value: "+5511988887453" },
-  ],
-};
+// Instancia o app do Express
+const app = express();
+app.use(express.json()); // Middleware para tratar JSON no corpo das requisições
 
-// Função principal
-async function main() {
+// Endpoint para integração com Pipefy
+app.post("/pipefy-integration", async (req, res) => {
   try {
-    // Gera a query
-    const query = createRecordQuery(TABLE_ID, recordData.title, recordData.fields);
-    console.log("Query gerada:", query);  // Log da query para verificar
+    const { title, fields } = req.body; // Obtém os dados do corpo da requisição
+
+    // Gera a query para criar o registro
+    const query = createRecordQuery(TABLE_ID, title, fields);
+    console.log("Query gerada:", query); // Log da query para verificar
 
     // Executa a query
     const result = await executeQuery(query);
 
-    // Exibe o resultado
-    console.log("Registro criado com sucesso:");
-    console.log(JSON.stringify(result, null, 2));
+    // Retorna sucesso
+    res.status(200).json({
+      message: "Registro criado com sucesso!",
+      result,
+    });
   } catch (error) {
-    // Caso haja erro, exibe a mensagem e a resposta da API
     console.error("Erro ao criar registro:", error.message);
-    if (error.response) {
-      console.error("Detalhes do erro:", JSON.stringify(error.response.data, null, 2));
-    }
-  }
-}
 
-// Executar
-main();
+    // Retorna erro
+    res.status(500).json({
+      message: "Erro ao processar a requisição.",
+      error: error.message,
+    });
+  }
+});
+
+// Rota para teste inicial
+app.get("/", (req, res) => {
+  res.send("API do Pipefy funcionando!");
+});
+
+// Define a porta
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
