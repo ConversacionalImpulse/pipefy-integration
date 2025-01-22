@@ -9,11 +9,11 @@ const PIPEFY_TOKEN = process.env.PIPEFY_TOKEN;
 const api = axios.create({
   baseURL: API_URL,
   headers: {
-    Authorization: `Bearer ${PIPEFY_TOKEN}`,
+    Authorization: `Bearer ${PIPEFY_TOKEN}`, // Corrigido para interpolação correta
     "Content-Type": "application/json",
   },
 });
-console.log("Cabeçalho Authorization:", `Bearer ${PIPEFY_TOKEN}`);
+console.log("Cabeçalho Authorization:", `Bearer ${PIPEFY_TOKEN}`); // Corrigido para interpolação correta
 
 // Função para executar uma query GraphQL
 async function executeQuery(query) {

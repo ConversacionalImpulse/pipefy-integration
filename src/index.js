@@ -1,6 +1,6 @@
 const express = require("express");
-const { executeQuery } = require("./api");
-const { createRecordQuery } = require("./queries");
+const { executeQuery } = require("./api/api");
+const { createRecordQuery } = require("./query/queries");
 require("dotenv").config({ path: "../.env" });
 
 console.log("Token carregado:", process.env.PIPEFY_TOKEN);

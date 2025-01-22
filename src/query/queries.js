@@ -28,4 +28,30 @@ const createRecordQuery = (tableId, title, fields) => {
   `;
 };
 
-module.exports = { createRecordQuery };
+// Query para verificar duplicatas
+const checkDuplicateQuery = (tableId, email, telefone) => {
+  return `
+    query {
+      table_records(table_id: "${tableId}", filter: {
+        and: [
+          { field: "email", operator: "EQUALS", value: "${email}" },
+          { field: "telefone", operator: "EQUALS", value: "${telefone}" }
+        ]
+      }) {
+        edges {
+          node {
+            id
+            title
+            record_fields {
+              name
+              value
+            }
+          }
+        }
+      }
+    }
+  `;
+};
+
+
+module.exports = { createRecordQuery, checkDuplicateQuery };
