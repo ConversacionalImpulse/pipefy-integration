@@ -1,50 +1,19 @@
-const express = require("express");
-const { executeQuery } = require("./api/api");
-const { createRecordQuery } = require("./query/queries");
-require("dotenv").config({ path: "../.env" });
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import routes from "./routes/routes.js"; // Caminho corrigido
 
-console.log("Token carregado:", process.env.PIPEFY_TOKEN);
+dotenv.config();
 
-// Configurações
-const TABLE_ID = "305637362";
-
-// Instancia o app do Express
 const app = express();
-app.use(express.json()); // Middleware para tratar JSON no corpo das requisições
 
-// Endpoint para integração com Pipefy
-app.post("/pipefy-integration", async (req, res) => {
-  try {
-    const { title, fields } = req.body; // Obtém os dados do corpo da requisição
+app.use(cors());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-    // Gera a query para criar o registro
-    const query = createRecordQuery(TABLE_ID, title, fields);
-    console.log("Query gerada:", query); // Log da query para verificar
+app.use(routes);
 
-    // Executa a query
-    const result = await executeQuery(query);
-
-    // Retorna sucesso
-    res.status(200).json({
-      message: "Registro criado com sucesso!",
-      result,
-    });
-  } catch (error) {
-    console.error("Erro ao criar registro:", error.message);
-
-    // Retorna erro
-    res.status(500).json({
-      message: "Erro ao processar a requisição.",
-      error: error.message,
-    });
-  }
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => {
+    console.log(`🚀 API rodando em http://localhost:${PORT}`);
 });
-
-// Rota para teste inicial
-app.get("/", (req, res) => {
-  res.send("API do Pipefy funcionando!");
-});
-
-// Define a porta
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
