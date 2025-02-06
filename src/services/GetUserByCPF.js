@@ -1,6 +1,6 @@
 export async function getUserByCPF(cpf) {
     const query = `query {
-        table_records(table_id: "305637362", where: { field_values: { field_id: "CPF", field_value: "${cpf}" } }) {
+        table_records(table_id: "305637362") {
             edges {
                 node {
                     id
@@ -19,7 +19,7 @@ export async function getUserByCPF(cpf) {
     const response = await fetch('https://api.pipefy.com/graphql', {
         method: 'POST',
         headers: {
-            'Authorization': `Bearer ${process.env.PIPEFY_API_TOKEN}`,
+            'Authorization': `Bearer ${process.env.PIPEFY_TOKEN}`,
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({ query }),
@@ -34,11 +34,20 @@ export async function getUserByCPF(cpf) {
         throw new Error(responseData.errors[0].message);
     }
 
-    // Verificando se existe a propriedade 'table_records'
+    // Filtrando os registros pelo CPF
     if (responseData.data && responseData.data.table_records) {
-        // Retorna os registros encontrados
-        return responseData.data.table_records.edges;
+        const filteredRecords = responseData.data.table_records.edges.filter((record) => {
+            // Aqui, estamos verificando se algum campo do registro tem o CPF que você está buscando
+            const cpfField = record.node.record_fields.find(field => field.field.label === "CPF");
+            return cpfField && cpfField.value === cpf;
+        });
+
+        if (filteredRecords.length > 0) {
+            return filteredRecords;  // Retorna os registros filtrados
+        } else {
+            throw new Error(`Nenhum registro encontrado para o CPF ${cpf}`);
+        }
     } else {
-        throw new Error('Nenhum dado encontrado para o CPF ou erro na consulta');
+        throw new Error('Erro na consulta ou nenhum dado encontrado');
     }
 }
