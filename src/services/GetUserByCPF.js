@@ -1,6 +1,6 @@
 export async function getUserByCPF(cpf) {
     const query = `query {
-        table_records(table_id: "305637362") {
+        table_records(table_id: "305703862") {
             edges {
                 node {
                     id
