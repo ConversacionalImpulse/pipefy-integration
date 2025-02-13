@@ -1,7 +1,11 @@
-import { getRecordIdByCPF } from './getRecordIdByCPF.js'; 
+import { getRecordIdByCPF } from "./getRecordIdByCPF.js";
+import { normalizeCPF } from "../utils/normalizeCPF.js"; // Importando a função utilitária
 
 export async function updateUserStatus(cpf, statusPagamento, statusMatricula) {
-  // 1️⃣ Buscar o ID do registro pelo CPF
+  // 1️⃣ Normalizar o CPF para garantir que esteja no formato correto
+  cpf = normalizeCPF(cpf);
+
+  // 2️⃣ Buscar o ID do registro pelo CPF
   const recordId = await getRecordIdByCPF(cpf);
   if (!recordId) {
     throw new Error(`Nenhum registro encontrado para o CPF ${cpf}`);
@@ -11,7 +15,7 @@ export async function updateUserStatus(cpf, statusPagamento, statusMatricula) {
   const STATUS_FIELD_ID = "status";  
   const MATRICULA_FIELD_ID = "matr_cula";  
 
-  // 2️⃣ Função para atualizar um campo
+  // 3️⃣ Função para atualizar um campo
   async function updateField(fieldId, value) {
     const query = `
       mutation {
@@ -44,7 +48,7 @@ export async function updateUserStatus(cpf, statusPagamento, statusMatricula) {
     return responseData.data.setTableRecordFieldValue.table_record.id;
   }
 
-  // 3️⃣ Atualizar os campos
+  // 4️⃣ Atualizar os campos
   await updateField(STATUS_FIELD_ID, statusPagamento);
   await updateField(MATRICULA_FIELD_ID, statusMatricula);
 

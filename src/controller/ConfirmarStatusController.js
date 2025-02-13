@@ -1,7 +1,11 @@
 import { updateUserStatus } from "../services/UpdateUserStatus.js";
+import { normalizeCPF } from "../utils/normalizeCPF.js"; // Criando uma função utilitária para reutilização
 
 export async function confirmarStatus(req, res) {
-    const { cpf, pagamentoConfirmado } = req.body;
+    let { cpf, pagamentoConfirmado } = req.body;
+
+    // Normalizando o CPF antes de usá-lo
+    cpf = normalizeCPF(cpf);
 
     let statusPagamento = pagamentoConfirmado ? "PAGO" : "NÃO PAGO";
     let statusMatricula = pagamentoConfirmado ? "CONFIRMADA" : "CANCELADA";

@@ -1,4 +1,9 @@
+import { normalizeCPF } from "../utils/NormalizeCPF.js";
+
 export async function getRecordIdByCPF(cpf) {
+    // Normalizando o CPF da requisição
+    const formattedCPF = normalizeCPF(cpf);
+
     const query = `query {
         table_records(table_id: "305703862") {
             edges {
@@ -6,6 +11,7 @@ export async function getRecordIdByCPF(cpf) {
                     id
                     record_fields {
                         field {
+                            id
                             label
                         }
                         value
@@ -30,11 +36,20 @@ export async function getRecordIdByCPF(cpf) {
         throw new Error(responseData.errors[0].message);
     }
 
-    // Filtrando para encontrar o ID do registro com o CPF informado
-    const record = responseData.data.table_records.edges.find((record) => {
-        const cpfField = record.node.record_fields.find(field => field.field.label === "CPF");
-        return cpfField && cpfField.value === cpf;
-    });
+    if (responseData.data && responseData.data.table_records) {
+        const filteredRecord = responseData.data.table_records.edges.find((record) => {
+            const cpfField = record.node.record_fields.find(field => field.field.label === "CPF");
 
-    return record ? record.node.id : null;
+            // Normalizando o CPF retornado pela Pipefy antes da comparação
+            return cpfField && normalizeCPF(cpfField.value) === formattedCPF;
+        });
+
+        if (filteredRecord) {
+            return filteredRecord.node.id;
+        } else {
+            throw new Error(`Nenhum registro encontrado para o CPF ${cpf}`);
+        }
+    } else {
+        throw new Error('Erro na consulta ou nenhum dado encontrado');
+    }
 }
