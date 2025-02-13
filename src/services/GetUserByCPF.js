@@ -37,9 +37,12 @@ export async function getUserByCPF(cpf) {
     // Filtrando os registros pelo CPF
     if (responseData.data && responseData.data.table_records) {
         const filteredRecords = responseData.data.table_records.edges.filter((record) => {
-            // Aqui, estamos verificando se algum campo do registro tem o CPF que você está buscando
+            // Pegando o CPF armazenado no banco e removendo os caracteres especiais
             const cpfField = record.node.record_fields.find(field => field.field.label === "CPF");
-            return cpfField && cpfField.value === cpf;
+            const cpfDatabase = cpfField ? cpfField.value.replace(/\D/g, "") : "";
+
+            // Comparação do CPF sem formatação
+            return cpfDatabase === cpf;
         });
 
         if (filteredRecords.length > 0) {
