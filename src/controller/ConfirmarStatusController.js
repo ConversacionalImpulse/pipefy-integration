@@ -1,5 +1,5 @@
 import { updateUserStatus } from "../services/UpdateUserStatus.js";
-import { normalizeCPF } from "../utils/normalizeCPF.js"; // Criando uma função utilitária para reutilização
+import { normalizeCPF } from "../utils/NormalizeCPF.js"; // Criando uma função utilitária para reutilização
 
 export async function confirmarStatus(req, res) {
     let { cpf, pagamentoConfirmado } = req.body;
