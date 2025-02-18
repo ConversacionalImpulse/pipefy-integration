@@ -1,11 +1,10 @@
 import { updateUserStatus } from "../services/UpdateUserStatus.js";
-import { normalizeCPF } from "../utils/NormalizeCPF.js"; // Criando uma função utilitária para reutilização
 
 export async function confirmarStatus(req, res) {
     let { cpf, pagamentoConfirmado } = req.body;
 
-    // Normalizando o CPF antes de usá-lo
-    cpf = normalizeCPF(cpf);
+    // Normalizando o CPF diretamente no controller
+    cpf = cpf.replace(/\D/g, ""); // Remove tudo que não for número
 
     let statusPagamento = pagamentoConfirmado ? "PAGO" : "NÃO PAGO";
     let statusMatricula = pagamentoConfirmado ? "CONFIRMADA" : "CANCELADA";
