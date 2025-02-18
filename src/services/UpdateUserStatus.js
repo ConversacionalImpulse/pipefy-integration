@@ -1,11 +1,9 @@
-import { getRecordIdByCPF } from "./getRecordIdByCPF.js";
-import { normalizeCPF } from "../utils/NormalizeCPF.js";
-
 export async function updateUserStatus(cpf, statusPagamento, statusMatricula) {
-  // 1️⃣ Normalizar o CPF para garantir que esteja no formato correto
-  cpf = normalizeCPF(cpf);
+  
+  // Normalizar o CPF diretamente
+  cpf = cpf.replace(/\D/g, ""); // Remove tudo que não for número
 
-  // 2️⃣ Buscar o ID do registro pelo CPF
+  // Buscar o ID do registro pelo CPF
   const recordId = await getRecordIdByCPF(cpf);
   if (!recordId) {
     throw new Error(`Nenhum registro encontrado para o CPF ${cpf}`);
@@ -15,20 +13,19 @@ export async function updateUserStatus(cpf, statusPagamento, statusMatricula) {
   const STATUS_FIELD_ID = "status";  
   const MATRICULA_FIELD_ID = "matr_cula";  
 
-  // 3️⃣ Função para atualizar um campo
+  // Função para atualizar um campo
   async function updateField(fieldId, value) {
-    const query = `
-      mutation {
-        setTableRecordFieldValue(input: {
-          table_record_id: "${recordId}",
-          field_id: "${fieldId}",
-          value: "${value}"
-        }) {
-          table_record {
-            id
-          }
+    const query = `mutation {
+      setTableRecordFieldValue(input: {
+        table_record_id: "${recordId}",
+        field_id: "${fieldId}",
+        value: "${value}"
+      }) {
+        table_record {
+          id
         }
-      }`;
+      }
+    }`;
 
     const response = await fetch('https://api.pipefy.com/graphql', {
       method: 'POST',
@@ -48,7 +45,7 @@ export async function updateUserStatus(cpf, statusPagamento, statusMatricula) {
     return responseData.data.setTableRecordFieldValue.table_record.id;
   }
 
-  // 4️⃣ Atualizar os campos
+  // Atualizar os campos
   await updateField(STATUS_FIELD_ID, statusPagamento);
   await updateField(MATRICULA_FIELD_ID, statusMatricula);
 

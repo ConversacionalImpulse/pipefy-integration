@@ -1,8 +1,7 @@
-import { normalizeCPF } from "../utils/NormalizeCPF.js";
-
 export async function getRecordIdByCPF(cpf) {
-    // Normalizando o CPF da requisição
-    const formattedCPF = normalizeCPF(cpf);
+    
+    // Normalizando o CPF da requisição diretamente
+    const formattedCPF = cpf.replace(/\D/g, ""); // Remove tudo que não for número
 
     const query = `query {
         table_records(table_id: "305703862") {
@@ -41,7 +40,7 @@ export async function getRecordIdByCPF(cpf) {
             const cpfField = record.node.record_fields.find(field => field.field.label === "CPF");
 
             // Normalizando o CPF retornado pela Pipefy antes da comparação
-            return cpfField && normalizeCPF(cpfField.value) === formattedCPF;
+            return cpfField && cpfField.value.replace(/\D/g, "") === formattedCPF;
         });
 
         if (filteredRecord) {
