@@ -1,5 +1,5 @@
 import { getRecordIdByCPF } from "./getRecordIdByCPF.js";
-import { normalizeCPF } from "../utils/normalizeCPF.js"; // Importando a função utilitária
+import { normalizeCPF } from "../../utils/normalizeCPF.js";
 
 export async function updateUserStatus(cpf, statusPagamento, statusMatricula) {
   // 1️⃣ Normalizar o CPF para garantir que esteja no formato correto
