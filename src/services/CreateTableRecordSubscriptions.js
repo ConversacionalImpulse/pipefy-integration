@@ -18,7 +18,7 @@ export async function createRecordTable(nome, telefone, email, cpf, pagamento) {
     const response = await fetch('https://api.pipefy.com/graphql', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.PIPEFY_API_TOKEN}`,
+        'Authorization': `Bearer ${process.env.PIPEFY_TOKEN}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ query }),
