@@ -4,11 +4,11 @@ import { createRecordTable } from "../services/CreateTableRecordSubscriptions.js
 dotenv.config();
 
 export async function createData(req, res) {
-  let { nome, telefone, email, cpf, plano } = req.body; 
+  let { nome, telefone, email, cpf, plano, pagamento } = req.body; 
 
   try {
     // Chamando a função de criação do registro com o novo parâmetro
-    const recordId = await createRecordTable(nome, telefone, email, cpf, plano);
+    const recordId = await createRecordTable(nome, telefone, email, cpf, plano, pagamento);
 
     // Respondendo ao cliente
     res.status(200).json({
