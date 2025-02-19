@@ -1,9 +1,12 @@
-import { updateUserStatus } from "../services/UpdateUserStatus.js";
-
 export async function confirmarStatus(req, res) {
     let { cpf, pagamentoConfirmado } = req.body;
 
-    // Normalizando o CPF diretamente no controller
+    console.log("CPF recebido no request:", cpf);
+
+    if (!cpf) {
+        return res.status(400).json({ error: "CPF é obrigatório" });
+    }
+
     cpf = cpf.replace(/\D/g, ""); // Remove tudo que não for número
 
     let statusPagamento = pagamentoConfirmado ? "PAGO" : "NÃO PAGO";
