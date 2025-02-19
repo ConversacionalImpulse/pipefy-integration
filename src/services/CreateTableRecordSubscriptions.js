@@ -6,7 +6,7 @@ export async function createRecordTable(nome, telefone, email, cpf, pagamento) {
             { field_id: "Nome", field_value: "${nome}" },    
             { field_id: "Email", field_value: "${email}" },  
             { field_id: "Telefone", field_value: "${telefone}" }, 
-            { field_id: "CPF", field_value: "${cpf}" }  
+            { field_id: "CPF", field_value: "${cpf}" }, 
             { field_id: "Pagamento", field_value: "${pagamento}" }     
           ]
         }) {
