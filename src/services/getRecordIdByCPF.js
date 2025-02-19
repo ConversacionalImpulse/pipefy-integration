@@ -1,5 +1,4 @@
 const axios = require('axios');  
-
 export async function getRecordIdByCPF(cpf) {
     
     // Normalizando o CPF da requisição diretamente
