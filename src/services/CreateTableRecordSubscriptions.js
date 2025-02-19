@@ -1,4 +1,4 @@
-export async function createRecordTable(nome, telefone, email, cpf) {
+export async function createRecordTable(nome, telefone, email, cpf, pagamento) {
     const query = `
       mutation {
         createTableRecord(input: {
