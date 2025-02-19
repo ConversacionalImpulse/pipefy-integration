@@ -1,4 +1,4 @@
-export async function createRecordTable(nome, telefone, email, cpf, pagamento) {
+export async function createRecordTable(nome, telefone, email, cpf, plano, pagamento) {
   const query = `
     mutation {
       createTableRecord(input: {
@@ -8,7 +8,8 @@ export async function createRecordTable(nome, telefone, email, cpf, pagamento) {
           { field_id: "Email", field_value: "${email}" },  
           { field_id: "Telefone", field_value: "${telefone}" }, 
           { field_id: "CPF", field_value: "${cpf}" },  
-          { field_id: "Pagamento", field_value: "${pagamento}" }     
+          { field_id: "Pagamento", field_value: "${pagamento}" },
+          { field_id: "Plano", field_value: "${plano}" }       
         ]
       }) {
         table_record {
