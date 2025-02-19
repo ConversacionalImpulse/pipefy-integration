@@ -1,3 +1,6 @@
+import { getRecordIdByCPF } from './getRecordIdByCPF.js';
+
+
 export async function updateUserStatus(cpf, statusPagamento, statusMatricula) {
   try {
       // Normaliza o CPF 
