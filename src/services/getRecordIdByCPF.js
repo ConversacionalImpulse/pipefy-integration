@@ -1,5 +1,4 @@
-
-const fetch = require('node-fetch');
+const axios = require('axios'); // Importando o axios
 
 export async function getRecordIdByCPF(cpf) {
     try {
@@ -16,20 +15,20 @@ export async function getRecordIdByCPF(cpf) {
         }
         `;
         
-        // Faz a requisição à API do Pipefy
-        const response = await fetch('https://api.pipefy.com/graphql', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${process.env.PIPEFY_TOKEN}`,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ query })
-        });
-        
-        const data = await response.json();
+        // Faz a requisição à API do Pipefy com axios
+        const response = await axios.post(
+            'https://api.pipefy.com/graphql',
+            { query },
+            {
+                headers: {
+                    'Authorization': `Bearer ${process.env.PIPEFY_TOKEN}`,
+                    'Content-Type': 'application/json',
+                }
+            }
+        );
         
         // Verifica se encontrou algum registro
-        const records = data.data.allTableRecords.edges;
+        const records = response.data.data.allTableRecords.edges;
         
         if (records.length === 0) {
             throw new Error(`Nenhum registro encontrado para o CPF ${cpf}`);
