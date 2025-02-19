@@ -4,12 +4,12 @@ export async function createRecordTable(nome, telefone, email, cpf, plano, pagam
       createTableRecord(input: {
         table_id: "305703862",  
         fields_attributes: [
-          { field_id: "Nome", field_value: "${nome}" },    
-          { field_id: "Email", field_value: "${email}" },  
-          { field_id: "Telefone", field_value: "${telefone}" }, 
-          { field_id: "CPF", field_value: "${cpf}" },  
-          { field_id: "Pagamento", field_value: "${pagamento}" },
-          { field_id: "Plano", field_value: "${plano}" }       
+          { field_id: "nome", field_value: "${nome}" },    
+          { field_id: "email", field_value: "${email}" },  
+          { field_id: "telefone", field_value: "${telefone}" }, 
+          { field_id: "cpf", field_value: "${cpf}" },  
+          { field_id: "pagamento", field_value: "${pagamento}" },
+          { field_id: "plano", field_value: "${plano}" }       
         ]
       }) {
         table_record {
