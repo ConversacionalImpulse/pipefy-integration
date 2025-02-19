@@ -1,3 +1,5 @@
+import { updateUserStatus } from "../services/UpdateUserStatus.js"; 
+
 export async function confirmarStatus(req, res) {
     let { cpf, pagamentoConfirmado } = req.body;
 
