@@ -1,5 +1,6 @@
+import { getRecordIdByCPF } from "./GetRecordIdByCPF.js"; 
+
 export async function updateUserStatus(cpf, statusPagamento, statusMatricula) {
-  
   // Normalizar o CPF diretamente
   cpf = cpf.replace(/\D/g, ""); // Remove tudo que não for número
 
