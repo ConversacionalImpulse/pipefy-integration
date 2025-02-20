@@ -11,7 +11,7 @@ export async function updateUserStatus(cpf, statusPagamento, statusMatricula) {
 
       // IDs dos campos que você deseja atualizar no Pipefy
       const STATUS_FIELD_ID = "status";  
-      const MATRICULA_FIELD_ID = "matricula";  
+      const MATRICULA_FIELD_ID = "matr_cula";  
 
       // Função para atualizar o campo no Pipefy
       async function updateField(fieldId, value) {
